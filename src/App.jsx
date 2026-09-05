@@ -7,6 +7,7 @@ import Navbar from './componnents/Navbar';
 import Articles from './pages/Articles';
 import AddArticle from './pages/AddArticle';
 import ArticleDetails from './pages/ArticleDetails';
+import Footer from './componnents/Footer';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 
@@ -60,7 +61,9 @@ function App() {
         <Route path="/articles" element={<Articles articles={articles} handleDelete={handleDelete}/>} />
         <Route path="/article/:id" element={<ArticleDetails/>}/>
         <Route path="/add" element={<AddArticle onAdd={addArticle} />} />
+      
       </Routes>
+      <Footer />
     </div>
 
   );
