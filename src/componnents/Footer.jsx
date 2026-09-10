@@ -2,7 +2,7 @@ import logo from "../assets/logo.jpg";
 function Footer() {
 
     return (
-        <div className="border-t-2 mt-20 bg-gray-900 rounded-2xl p-5 ">
+        <div className="border-t-2  bg-gray-900  p-5 w-full ">
             <div className="grid grid-cols-4">
                 <div className="flex flex-col  ml-4 relative">
                     <img src={logo} alt="ArticleWeb" className="w-[15%] ml-1 mt-1 rounded-3xl absolute" />
@@ -30,8 +30,8 @@ function Footer() {
                 </div>
                 <div className="flex flex-col">
                     <h2 className=" text-white  mt-3 font-serif font-bold">Newsletter</h2>
-                    <p className=" text-gray-300">Stay updated with the lastest articles and ideas.</p>
-                    <input type="email" placeholder="example@email.com" className="border border-gray-200 rounded mt-3 p-1 outline-0" />
+                    <p className=" text-gray-300">Stay updated with the latest articles and ideas.</p>
+                    <input type="email" placeholder="example@email.com" className="border border-gray-200 rounded mt-3 p-1 outline-0 placeholder-slate-400" />
                     <button className="border-blue-600 bg-blue-600 font-bold rounded-xl text-sm w-[50%] mt-3  p-2 text-white">Subscribe</button>
                 </div>
             </div>

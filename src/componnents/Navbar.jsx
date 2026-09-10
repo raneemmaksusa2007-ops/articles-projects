@@ -15,7 +15,7 @@ function Navbar() {
 
                 </div>
                 <div className="flex justify-end pr-3">
-                    <Link to="/add" className=" w-[25%] border-blue-800 bg-blue-700 rounded-xl text-sm p-2 mt-4 mb-4 right-0 text-white">+Add Articles</Link>
+                    <Link to="/add" className=" w-[25%] border-blue-800 bg-blue-700 rounded-xl text-sm p-2 mt-4 mb-4 right-0 text-white">Add Article +</Link>
 
                 </div>
             </div>
