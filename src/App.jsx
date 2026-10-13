@@ -10,64 +10,30 @@ import ArticleDetails from './pages/ArticleDetails';
 import Footer from './componnents/Footer';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import Register from './pages/Register';
+import Login from './pages/Login';
 
 function App() {
-  const {id} = useParams();
-  const [isLoding, setIsloding] = useState(true);
-  const [isErorr, setIsErorr] = useState(null);
-  const [articles, setArticle] = useState([]);
 
-  const addArticle = (newArticle) => {
-    const articleWithExtra = {
-      ...newArticle,
-      id: Date.now()
-    }
-    setArticle([...articles, newArticle])
-  }
-
-  useEffect(() => {
-    async function getData() {
-      try {
-        setIsloding(true)
-        const response = await axios.get(`https://jsonplaceholder.typicode.com/posts/`);
-        setArticle(response.data);
-      } catch (err) {
-        setIsErorr("there is Erorr unexpected")
-      } finally {
-        setIsloding(false);
-      }
-    }
-    getData();
-  }, [])
-
-  if (isLoding) {
-    return <p>Loading...</p>
-  }
-
-  if (isErorr) {
-    return <p>{isErorr}</p>
-  }
-
-  function handleDelete(articleId){
-    const updatedArticle = articles.filter((article) => article.id !== articleId);
-    setArticle(updatedArticle)
-  }
+  
   return (
     <div>
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
-        <Route path="/articles" element={<Articles articles={articles} handleDelete={handleDelete}/>} />
-        <Route path="/article/:id" element={<ArticleDetails/>}/>
-        <Route path="/add" element={<AddArticle onAdd={addArticle} />} />
-      
+        <Route path="/articles" element={<Articles />} />
+        <Route path="/article/:id" element={<ArticleDetails />} />
+        <Route path="/add" element={<AddArticle  />} />
+        <Route path="/register" element={<Register />} />
+         <Route path="/login" element={<Login />} />
       </Routes>
       <Footer />
     </div>
 
   );
- 
 }
+
+
 
 export default App

@@ -12,7 +12,7 @@ function ArticleDetails() {
     async function getData() {
       try {
         setIsloding(true)
-        const response = await axios.get(`https://jsonplaceholder.typicode.com/posts/${id}`);
+        const response = await axios.get(`http://127.0.0.1:8000/api/articles/${id}`);
         setArticle(response.data);
       } catch (err) {
         setIsErorr("there is Erorr unexpected")

@@ -1,6 +1,28 @@
 import { NavLink, Link } from "react-router";
 import logo from "../assets/logo.jpg";
+import { useAuth } from "../content/AuthContext";
+import axios from "axios";
+
+
 function Navbar() {
+
+    const { user , token,logout } = useAuth();
+    const handleLogout = async () => {
+        try{
+            const response = await axios.post("http://127.0.0.1:8000/api/logout",
+                {},
+                {
+                    headers : {
+                        Authorization : `Bearer ${token}`
+                    }
+                }
+                
+            )
+        }catch(err){
+               console.log(err)     
+        }
+        logout();
+    }
 
     return (
         <div>
@@ -14,10 +36,20 @@ function Navbar() {
                     <Link to="/articles" className="p-2">Articles</Link>
 
                 </div>
-                <div className="flex justify-end pr-3">
-                    <Link to="/add" className=" w-[25%] border-blue-800 bg-blue-700 rounded-xl text-sm p-2 mt-4 mb-4 right-0 text-white">Add Article +</Link>
 
+                
+                {user ? (
+                <div className="flex gap-3 items-center">
+                    <p>{user.name}</p>
+                    <button onClick={handleLogout} className="  border-red-800 bg-red-700 rounded-xl text-sm p-2 mt-4 mb-4  text-white"> log out</button>
                 </div>
+
+                ) :(
+                <div className="flex justify-end gap-2">
+                    <Link to="/register" className="  border-blue-800 bg-blue-700 rounded-xl text-sm p-2 mt-4 mb-4  text-white">Register</Link>
+                    <Link to="/login" className="  border-blue-800 bg-blue-700 rounded-xl text-sm p-2 mt-4 mb-4  text-white">log in</Link>
+                </div>
+                )}
             </div>
 
         </div>

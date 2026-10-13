@@ -1,10 +1,41 @@
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ArticleCard from '../componnents/ArticleCard'
-function Articles({ articles, handleDelete }) {
+import axios from 'axios';
+function Articles({ }) {
+
+    const [isLoding, setIsloding] = useState(true);
+    const [isErorr, setIsErorr] = useState(null);
+    const [articles, setArticle] = useState([]);
 
     const [search, setSearch] = useState("");
     const filterArticles = articles.filter((article) => article.title.toLowerCase().includes(search.toLowerCase()))
+
+
+
+    useEffect(() => {
+        async function getData() {
+            try {
+                setIsloding(true)
+                const response = await axios.get(`http://127.0.0.1:8000/api/articles`);
+                setArticle(response.data);
+            } catch (err) {
+                setIsErorr("there is Erorr unexpected")
+            } finally {
+                setIsloding(false);
+            }
+        }
+        getData();
+    }, [])
+
+    if (isLoding) {
+        return <p>Loading...</p>
+    }
+
+    if (isErorr) {
+        return <p>{isErorr}</p>
+    }
+
 
     return (
         <div>
@@ -25,7 +56,6 @@ function Articles({ articles, handleDelete }) {
                             id={article.id}
                             title={article.title}
                             body={article.body}
-                            handleDelete={handleDelete}
                         />
                     ))
                 }
