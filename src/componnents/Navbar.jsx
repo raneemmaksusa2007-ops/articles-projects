@@ -6,20 +6,20 @@ import axios from "axios";
 
 function Navbar() {
 
-    const { user , token,logout } = useAuth();
+    const { user, token, logout } = useAuth();
     const handleLogout = async () => {
-        try{
+        try {
             const response = await axios.post("http://127.0.0.1:8000/api/logout",
                 {},
                 {
-                    headers : {
-                        Authorization : `Bearer ${token}`
+                    headers: {
+                        Authorization: `Bearer ${token}`
                     }
                 }
-                
+
             )
-        }catch(err){
-               console.log(err)     
+        } catch (err) {
+            console.log(err)
         }
         logout();
     }
@@ -34,25 +34,26 @@ function Navbar() {
                     <Link to="/" className="p-2">Home</Link>
                     <Link to="/about" className="p-2" >About</Link>
                     <Link to="/articles" className="p-2">Articles</Link>
+                    
+            </div>
 
-                </div>
 
-                
-                {user ? (
-                <div className="flex gap-3 items-center">
-                    <p>{user.name}</p>
+            {user ? (
+                <div className="flex justify-end gap-2">
+                    <p className="flex items-center">{user.name}</p>
                     <button onClick={handleLogout} className="  border-red-800 bg-red-700 rounded-xl text-sm p-2 mt-4 mb-4  text-white"> log out</button>
+                    <Link to="/add" className="  border-red-800 bg-blue-700 rounded-xl text-sm p-2 mt-4 mb-4  text-white"> Add</Link>
                 </div>
 
-                ) :(
+            ) : (
                 <div className="flex justify-end gap-2">
                     <Link to="/register" className="  border-blue-800 bg-blue-700 rounded-xl text-sm p-2 mt-4 mb-4  text-white">Register</Link>
                     <Link to="/login" className="  border-blue-800 bg-blue-700 rounded-xl text-sm p-2 mt-4 mb-4  text-white">log in</Link>
                 </div>
-                )}
-            </div>
-
+            )}
         </div>
+
+        </div >
     );
 }
 export default Navbar;

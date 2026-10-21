@@ -12,10 +12,11 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import Register from './pages/Register';
 import Login from './pages/Login';
+import EditArticle from './pages/EditArticle';
 
 function App() {
 
-  
+
   return (
     <div>
       <Navbar />
@@ -24,9 +25,10 @@ function App() {
         <Route path="/about" element={<About />} />
         <Route path="/articles" element={<Articles />} />
         <Route path="/article/:id" element={<ArticleDetails />} />
-        <Route path="/add" element={<AddArticle  />} />
+        <Route path="/add" element={<AddArticle />} />
         <Route path="/register" element={<Register />} />
-         <Route path="/login" element={<Login />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/edit/:id" element={<EditArticle />} />
       </Routes>
       <Footer />
     </div>

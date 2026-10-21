@@ -1,66 +1,106 @@
 import { useState } from "react";
+import { useAuth } from "../content/AuthContext";
+import { useNavigate } from "react-router";
+import axios from "axios";
 
 
-function AddArticle({ add }) {
+function AddArticle() {
     const [title, setTitle] = useState("");
     const [body, setBody] = useState("");
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState("");
 
-    const handleSubmit = (e) => {
+    const { token } = useAuth();
+    const navigate = useNavigate();
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (!title.trim() || !body.trim()) {
+        if (title === "" || body === "") {
             alert("You should fill all fields");
             return;
         }
 
-        add({
-            id: Date.now(),
-            title: title,
-            body: body,
-        });
+        try {
+            setLoading(true);
+            setError("");
 
-        setTitle("");
-        setBody("");
+            const response = await axios.post(
+                "http://127.0.0.1:8000/api/articles",
+                {
+                    title: title,
+                    body: body,
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
+
+            alert("Article published successfully!");
+
+            navigate("/articles");
+        } catch (err) {
+            console.error(err);
+          
+            setError(
+                err.response?.data?.message ||
+                "Something went wrong. Please try again."
+            );
+        } finally {
+            setLoading(false);
+            setTitle("");
+            setBody("");
+        }
     };
 
     return (
-        <div>
-            <h2 className="text-5xl text-center font-bold mt-6 mb-4 font-serif">
-                Add New Article
-            </h2>
+        <div className="min-h-screen bg-gray-50 px-8 py-10">
+            <div className="max-w-xl mx-auto">
+                <div className="text-3xl font-extrabold text-gray-900 mb-6 text-center">
+                    <h1>Add New Article</h1>
+                </div>
 
-            <div className="flex justify-center p-3">
                 <form
                     onSubmit={handleSubmit}
-                    className="bg-gray-300 rounded-xl p-7 w-[70%]"
+                    className="bg-white border border-gray-100 shadow-sm rounded-xl p-8 flex flex-col gap-4"
                 >
-                    <div className="flex flex-col gap-1">
-                        <label className="font-bold">Title</label>
+                    <div>
+                        <label className="block text-sm font-medium text-gray-600 mb-1">
+                            Title
+                        </label>
 
                         <input
                             type="text"
-                            placeholder="Enter the title.."
+                            placeholder="Enter the title..."
                             value={title}
-                            onChange={(event) => setTitle(event.target.value)}
-                            className="border border-black rounded-xl p-2 w-full bg-white"
+                            onChange={(e) => setTitle(e.target.value)}
+                            className="w-full border border-gray-200 rounded-lg px-4 py-2 text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
                         />
+                    </div>
 
-                        <label className="font-bold">Content</label>
+                    <div>
+                        <label className="block text-sm font-medium text-gray-600 mb-1">
+                            Content
+                        </label>
 
                         <textarea
-                            placeholder="Enter the body.."
+                            placeholder="Enter the content..."
                             value={body}
-                            onChange={(event) => setBody(event.target.value)}
-                            className="border border-black rounded-xl p-2 w-full h-40 bg-white"
-                        ></textarea>
-
-                        <button
-                            type="submit"
-                            className="font-bold text-white text-center bg-blue-600 rounded-xl w-full mt-4 py-1"
-                        >
-                            Publish Article
-                        </button>
+                            onChange={(e) => setBody(e.target.value)}
+                            rows={5}
+                            className="w-full border border-gray-200 rounded-lg px-4 py-2 text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        />
                     </div>
+
+                    <button
+                        type="submit"
+                        disabled={loading}
+                        className="bg-blue-600 text-white font-medium py-2.5 rounded-lg hover:bg-blue-700 transition disabled:opacity-50"
+                    >
+                        {loading ? "Publishing..." : "Publish Article"}
+                    </button>
                 </form>
             </div>
         </div>

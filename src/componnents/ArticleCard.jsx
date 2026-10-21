@@ -1,30 +1,71 @@
+import { Link, useNavigate } from "react-router";
+import { useAuth } from "../content/AuthContext";
 import { useState } from "react";
-import { Link } from "react-router";
+import axios from "axios";
 
-function ArticleCard({ id, title, body, handleDelete }) {
-    function handleDeleteClick() {
-        const confirmed = window.confirm("Are You Sure ?")
+function ArticleCard({ id, title, body, userId, onDelete }) {
+    const [loading, setLoading] = useState(false);
+    const { user, token } = useAuth();
+
+    const handleDeleteClick = async () => {
+        const confirmed = window.confirm("Are you sure?");
         if (!confirmed) return;
-        handleDelete(id);
-    }
-    const [isFav, setIFav] = useState(false);
+        try {
+            setLoading(true);
+            const response = await axios.delete(`http://127.0.0.1:8000/api/articles/${id}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+
+            onDelete(id);
+        } catch (err) {
+            console.error(err);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     return (
-        <div>
+        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5 flex flex-col">
+            <div className="flex justify-between items-center">
+                <h2 className="text-lg font-bold text-gray-900 mb-2 line-clamp-2">
+                    {title}
+                </h2>
 
-            <div className="relative p-5 border bg-white border-gray-200 rounded-xl shadow-md flex flex-col justify-between">
-                <button onClick={() => setIFav(!isFav)} className="absolute right-5 size-6">{isFav ? "❤️" : "🤍"} </button>
-                <h1 className=" font-bold text-left text-blue-800 text-xl line-clamp-2 ">{title}</h1>
-                <div>
-                    <p className="line-clamp-3">{body}</p>
-                    <div className="grid grid-cols-2 mt-3">
-                        <Link to={`/article/${id}`} className="text-blue-700 font-bold ">See More</Link>
-                        <button onClick={handleDeleteClick} className="bg-red-500 rounded-xl text-white p-1 ">🗑️Delete</button>
+                {
+                 user?.id === userId ? (
+                    <div className="article-actions flex gap-2">
+                        <Link to={`/edit/${id}`} className="edit-btn">Edit</Link>
+                        <button
+                            onClick={handleDeleteClick}
+                           className="delete-btn text-red-500 border border-red-200 rounded-md px-3 py-1 text-sm flex items-center gap-1"
+                        >
+                            {loading ? "🗑️ Delete..." : "🗑️ Delete"}
+
+                        </button>
                     </div>
-                </div>
+                ) :(<></>)}
+            </div>
+
+            <p className="text-gray-500 text-sm leading-relaxed line-clamp-3 mb-4">
+                {body}
+            </p>
+
+            <hr className="border-gray-100 mb-4" />
+
+            <div className="flex items-center justify-between">
+                <Link
+                    to={`/article/${id}`}
+                    className="text-blue-600 text-sm font-medium hover:underline"
+                >
+                    Read full article
+                </Link>
             </div >
-        </div>
+        </div >
 
     );
+
 }
+
 export default ArticleCard;

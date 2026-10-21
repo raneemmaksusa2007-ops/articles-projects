@@ -28,7 +28,7 @@ function ArticleDetails() {
   if(isErorr) return <p>{isErorr}</p>
 
 return(
-  <div className=" bg-white rounded-xl shadow-md flex  flex-col items-center mt-5 p-6 justify-center min-h-[100vh]">
+  <div className=" bg-white rounded-xl shadow-md flex  flex-col items-center justify-center min-h-[70vh]">
     <h2  className=" font-bold text-center text-blue-600">{articles?.title}</h2>
     <p className="text-gray-700">{articles?.body}</p>
   </div>
